@@ -4,7 +4,6 @@ import 'package:hackerkernel/apis/login_api.dart';
 import 'package:hackerkernel/screens/cstm_txt_field.dart';
 import 'package:hackerkernel/screens/homepage.dart';
 import 'package:hackerkernel/shared_pref/shared_pref.dart';
-import 'package:sign_in_button/sign_in_button.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -23,54 +22,89 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              Image.asset(
-                "assets/images/login.jpg",
-                height: 350,
-              ),
-              const Align(
-                alignment: Alignment.centerLeft,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const SizedBox(height: 20),
+            Image.asset(
+              "assets/images/login.jpg",
+              height: 350,
+            ),
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
                   "Login",
                   style: TextStyle(
-                    fontSize: 22,
+                    fontSize: 28,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
-              CstmTxtField(
-                keyboardType: TextInputType.emailAddress,
-                controller: emailController,
-                hintText: "Email Id",
-                labelText: "Email Id",
-                prefixIcon: const Icon(Icons.alternate_email_rounded),
+            ),
+            const SizedBox(height: 20),
+            CstmTxtField(
+              keyboardType: TextInputType.emailAddress,
+              controller: emailController,
+              hintText: "Email Id",
+              labelText: "Email Id",
+              prefixIcon: const Icon(
+                Icons.alternate_email_rounded,
+                color: Colors.grey,
               ),
-              CstmTxtField(
-                obscureText: obscureText,
-                controller: pwdController,
-                hintText: "Password",
-                labelText: "Password",
-                prefixIcon: const Icon(Icons.lock_open_rounded),
-                suffixIcon: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        obscureText = !obscureText;
-                      });
-                    },
-                    icon: const Icon(Icons.remove_red_eye_outlined)),
+            ),
+            const SizedBox(height: 16),
+            CstmTxtField(
+              obscureText: obscureText,
+              controller: pwdController,
+              hintText: "Password",
+              labelText: "Password",
+              prefixIcon: const Icon(
+                Icons.lock_open_rounded,
+                color: Colors.grey,
               ),
-              Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                      onPressed: () {}, child: const Text("Forgot Password?"))),
-              SizedBox(
+              suffixIcon: IconButton(
+                  onPressed: () {
+                    setState(() {
+                      obscureText = !obscureText;
+                    });
+                  },
+                  icon: obscureText
+                      ? const Icon(
+                          Icons.visibility_off,
+                          color: Colors.grey,
+                        )
+                      : const Icon(
+                          Icons.visibility,
+                          color: Colors.grey,
+                        )),
+            ),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Text(
+                  "Forgot Password?",
+                  style: TextStyle(
+                    color: Colors.blue,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
+                        backgroundColor: Colors.blue.shade400,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
                       ),
                       onPressed: () {
                         login(
@@ -95,43 +129,57 @@ class _LoginState extends State<Login> {
                         "Login",
                         style: TextStyle(
                           color: Colors.white,
-                          fontWeight: FontWeight.bold,
                           fontSize: 22,
                         ),
                       ))),
-              const SizedBox(
-                height: 10,
-              ),
-              const Text("OR"),
-              const SizedBox(
-                height: 10,
-              ),
-              SizedBox(
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            const Text("OR"),
+            const SizedBox(
+              height: 20,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: SizedBox(
                 width: double.infinity,
-                child: SignInButton(
-                  Buttons.google,
-                  text: "Login with Google",
+                child: OutlinedButton.icon(
+                  icon: Image.asset(
+                    'assets/icon/search.png',
+                    height: 30,
+                  ),
                   onPressed: () {},
+                  label: const Text("Login with Google"),
+                  style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      backgroundColor: Colors.grey.shade200),
                 ),
               ),
-              const SizedBox(
-                height: 20,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            const Center(
+              child: Text.rich(
+                TextSpan(
+                  text: "New to Logistics? ",
+                  children: [
+                    TextSpan(
+                      text: "Register",
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "New to Logistics? ",
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                  Text(
-                    "Register",
-                    style: TextStyle(color: Colors.blue),
-                  ),
-                ],
-              )
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:hackerkernel/models/product.dart';
@@ -14,59 +15,61 @@ class ProductListItem extends StatefulWidget {
 class _ProductListItemState extends State<ProductListItem> {
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Container(
-          width: 150,
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.file(
-                  File(
-                    widget.product.image,
+    var mq = MediaQuery.sizeOf(context);
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      child: Container(
+        width: mq.width * .443,
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Stack(
+              children: [
+                Container(
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(50)),
+                  child: AspectRatio(
+                    aspectRatio: 1,
+                    child: Image.file(
+                      File(
+                        widget.product.image,
+                      ),
+                      width: double.infinity,
+                      fit: BoxFit.fill,
+                    ),
                   ),
-                  height: 150,
-                  width: 150,
-                  fit: BoxFit.cover,
                 ),
+                Positioned(
+                  right: 0,
+                  child: IconButton(
+                      onPressed: () {
+                        products.remove(widget.product);
+                        setState(() {});
+                      },
+                      icon: const Icon(
+                        Icons.delete,
+                        color: Colors.black,
+                      )),
+                )
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(widget.product.productName,
+                      maxLines: 2, overflow: TextOverflow.ellipsis),
+                  const SizedBox(height: 4),
+                  Text("\$${widget.product.price}.00",
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
+                ],
               ),
-              const SizedBox(
-                height: 10,
-              ),
-              Text(
-                widget.product.productName,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Text(
-                "\$${widget.product.price}",
-                style: const TextStyle(
-                  // fontWeight: FontWeight.bold,
-                  color: Colors.grey,
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
-        Positioned(
-          right: 0,
-          child: IconButton(
-              onPressed: () {
-                products.remove(widget.product);
-                setState(() {});
-              },
-              icon: const Icon(
-                Icons.delete,
-                color: Colors.red,
-              )),
-        )
-      ],
+      ),
     );
   }
 }
